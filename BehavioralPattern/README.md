@@ -3,4 +3,4 @@
 
 ## 2. [Observer Pattern](/BehavioralPattern/Observer/README.md)
 
-## 2. [Observer Pattern](/BehavioralPattern/State/README.md)
+## 3. [State Pattern](/BehavioralPattern/State/README.md)
