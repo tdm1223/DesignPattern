@@ -29,4 +29,4 @@
   - 차이점은 전략 패턴은 상속을 대체하려는 목적으로, 상태 패턴은 조건문을 대체하려는목적으로 사용된다.
 
 ## 예제
-- [State](/BehavioralPattern/state/state.cpp)
+- [State](/BehavioralPattern/State/state.cpp)
