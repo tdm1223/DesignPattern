@@ -1,8 +1,8 @@
 # DesignPattern
 
-## [Behavioral Pattern](/BehavioralPattern/README.md)
-### 1. [Command Pattern](/BehavioralPattern/Command/README.md)
-### 2. [Observer Pattern](/BehavioralPattern/Observer/README.md)
-### 3. [State Pattern](/BehavioralPattern/State/README.md)
-### 4. [Strategy Pattern](/BehavioralPattern/Strategy/README.md)
-### 5. [TemplateMethod Pattern](/BehavioralPattern/TemplateMethod/README.md)
+## Behavioral Pattern
+### [Command Pattern](/BehavioralPattern/Command/README.md)
+### [Observer Pattern](/BehavioralPattern/Observer/README.md)
+### [State Pattern](/BehavioralPattern/State/README.md)
+### [Strategy Pattern](/BehavioralPattern/Strategy/README.md)
+### [TemplateMethod Pattern](/BehavioralPattern/TemplateMethod/README.md)
