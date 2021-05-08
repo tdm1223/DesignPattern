@@ -1,16 +1,22 @@
 class Singleton
 {
-public: static Singleton& instance()
-{
-    // 객체를 사용할때까지 초기화를 미룬다.
-    if (instance_ == nullptr)
+public:
+    static Singleton& instance()
     {
-        instance_ = new Singleton();
+        // 객체를 사용할때까지 초기화를 미룬다.
+        if (instance_ == nullptr)
+        {
+            instance_ = new Singleton();
+        }
+        return *instance_;
     }
-    return *instance_;
-}
-private: 
-    Singleton() {}
+    Singleton(Singleton const&) = delete;
+    Singleton& operator=(Singleton const&) = delete;
+    Singleton(Singleton&&) = delete;
+    Singleton& operator=(Singleton&&) = delete;
+
+private:
+    Singleton() = default;
     static Singleton* instance_;
 };
 
@@ -22,6 +28,10 @@ public:
         static Singleton* instance = new Singleton();
         return *instance;
     }
+    Singleton(Singleton const&) = delete;
+    Singleton& operator=(Singleton const&) = delete;
+    Singleton(Singleton&&) = delete;
+    Singleton& operator=(Singleton&&) = delete;
 private:
-    Singleton() {}
+    Singleton() = default;
 };
