@@ -2,103 +2,109 @@
 #include<memory>
 #include<string>
 
-class Robot
+class Drink
 {
 public:
-    virtual ~Robot() = default;
+    virtual ~Drink() = default;
     virtual std::string getName() const = 0;
 };
 
-class RobotA : public Robot
+class Coffee : public Drink
 {
     std::string getName() const override
     {
-        return "RobotA";
+        return "커피";
     }
 };
-class RobotB : public Robot
+class Coke : public Drink
 {
     std::string getName() const override
     {
-        return "RobotB";
+        return "콜라";
     }
 };
 
-class RobotC : public Robot
+class Cocoa : public Drink
 {
     std::string getName() const override
     {
-        return "RobotC";
+        return "코코아";
     }
 };
 
-class RobotFactory
+enum class DrinkType
 {
-public:
-    virtual ~RobotFactory() = default;
-    virtual std::unique_ptr<Robot> MakeRobot() const = 0;
+    Coffee,
+    Coke,
+    Cocoa
 };
 
-class RobotAFactory : public RobotFactory
+class DrinkFactory
 {
 public:
-    std::unique_ptr<Robot> MakeRobot() const override
-    {
-        return std::make_unique<RobotA>();
-    }
+    virtual ~DrinkFactory() = default;
+    virtual std::unique_ptr<Drink> Create() const = 0;
 };
-class RobotBFactory : public RobotFactory
+
+class CoffeeFactory : public DrinkFactory
 {
 public:
-    std::unique_ptr<Robot> MakeRobot() const override
+    std::unique_ptr<Drink> Create() const override
     {
-        return std::make_unique<RobotB>();
-    }
-};
-class RobotCFactory : public RobotFactory
-{
-public:
-    std::unique_ptr<Robot> MakeRobot() const override
-    {
-        return std::make_unique<RobotC>();
+        return std::make_unique<Coffee>();
     }
 };
 
-class RobotStore final
+class CokeFactory : public DrinkFactory
 {
 public:
-    RobotStore(std::unique_ptr<RobotFactory>&& robotMaker)
-        : robotFactory_(std::move(robotMaker))
+    std::unique_ptr<Drink> Create() const override
+    {
+        return std::make_unique<Coke>();
+    }
+};
+
+class CocoaFactory : public DrinkFactory
+{
+public:
+    std::unique_ptr<Drink> Create() const override
+    {
+        return std::make_unique<Cocoa>();
+    }
+};
+
+class VendingMachine final
+{
+public:
+    VendingMachine(std::unique_ptr<DrinkFactory>&& drinkFactory) : drinkFactory_(std::move(drinkFactory))
     {}
 
-    void ChangeRobotMaker(std::unique_ptr<RobotFactory>&& creator)
+    void Create(std::unique_ptr<DrinkFactory>&& creator)
     {
-        robotFactory_ = std::move(creator);
+        drinkFactory_ = std::move(creator);
     }
 
-    void PrintRobotName() const
+    void PrintDrinkName() const
     {
-        std::cout << "Maked robot's name : " << robotFactory_->MakeRobot()->getName() << std::endl;
+        std::cout << "Maked drink's name : " << drinkFactory_->Create()->getName() << std::endl;
         std::cout << std::endl;
     }
 
 private:
-    std::unique_ptr<RobotFactory> robotFactory_;
+    std::unique_ptr<DrinkFactory> drinkFactory_;
 };
 
 int main()
 {
-    RobotStore store(std::make_unique<RobotAFactory>());
+    VendingMachine vendingMachine(std::make_unique<CoffeeFactory>());
 
-    std::cout << "==== Robot Factory ====" << std::endl;
-    store.PrintRobotName();
+    std::cout << "==== Vending Machine Factory ====" << std::endl;
+    vendingMachine.PrintDrinkName();
 
-    store.ChangeRobotMaker(std::make_unique<RobotBFactory>());
-    store.PrintRobotName();
+    vendingMachine.Create(std::make_unique<CokeFactory>());
+    vendingMachine.PrintDrinkName();
 
-    store.PrintRobotName();
-
-    store.ChangeRobotMaker(std::make_unique<RobotCFactory>());
-    store.PrintRobotName();
+    vendingMachine.Create(std::make_unique<CocoaFactory>());
+    vendingMachine.PrintDrinkName();
     return 0;
 }
