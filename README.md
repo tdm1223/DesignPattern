@@ -17,4 +17,4 @@
 
 ### 생성 패턴 종류
 1. [Singleton Pattern](/CreationalPattern/Singleton/README.md)
-2. [FactoryMethod Pattern](/CreationalPattern/factoryMethod/README.md)
+2. [FactoryMethod Pattern](/CreationalPattern/FactoryMethod/README.md)
