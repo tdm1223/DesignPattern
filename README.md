@@ -18,3 +18,10 @@
 ### 생성 패턴 종류
 1. [Singleton Pattern](/CreationalPattern/Singleton/README.md)
 2. [FactoryMethod Pattern](/CreationalPattern/FactoryMethod/README.md)
+
+## 구조 패턴
+- 클래스나 객체를 조합해 **더 큰 구조를 만드는 패턴**
+- 서로 다른 인터페이스를 지닌 2개의 객체를 묶어 단일 인터페이스를 제공하거나 객체들을 서로 묶어 새로운 기능을 제공하는 패턴
+
+### 구조 패턴 종류
+1. [Adapter Pattern](/StructuralPattern/Adapter/README.md)
