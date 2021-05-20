@@ -1,84 +1,96 @@
 #include<iostream>
 #include<memory>
+#include<string>
 
-/* Component (interface) */
-class Widget
+class Pizza
 {
 public:
-    virtual void Draw() = 0;
-    virtual ~Widget() = default;
+    virtual std::string getDescription() = 0;
+    virtual double getCost() = 0;
 };
 
-/* ConcreteComponent */
-class TextField : public Widget
+class PlainPizza : public Pizza
 {
-private:
-    int width;
-    int height;
-
-public:
-    TextField(int w, int h)
+    std::string getDescription() override
     {
-        width = w;
-        height = h;
+        return "얇은 도우";
     }
 
-    void Draw() override
+    double getCost() override
     {
-        std::cout << "TextField: " << width << ", " << height << '\n';
+        return 4.00;
     }
 };
 
-/* Decorator (interface) */
-class Decorator : public Widget
+class ToppingDecorator : public Pizza
 {
-private:
-    Widget* widget; // reference to Widget
-
 public:
-    Decorator(Widget* w)
+    Pizza* tempPizza;
+
+    ToppingDecorator(Pizza* newPizza)
     {
-        widget = w;
+        tempPizza = newPizza;
     }
 
-    void Draw() override
+    std::string getDescription() override
     {
-        widget->Draw();
+        return tempPizza->getDescription();
     }
 
-    ~Decorator()
+    double getCost() override
     {
-        delete widget;
+        return tempPizza->getCost();
     }
 };
 
-/* ConcreteDecoratorA */
-class BorderDecorator : public Decorator
+class Mozzarella : public ToppingDecorator
 {
 public:
-    BorderDecorator(Widget* w) : Decorator(w) { }
-    void Draw() override
+    Mozzarella(Pizza* newPizza) : ToppingDecorator(newPizza)
     {
-        Decorator::Draw();
-        std::cout << "BorderDecorator" << '\n';
+        std::cout << "도우 추가" << std::endl;
+        std::cout << "모짜렐라 치즈 추가" << std::endl;
+    }
+
+    std::string getDescription() override
+    {
+        return tempPizza->getDescription() + ", 모짜렐라 치즈";
+    }
+
+    double getCost() override
+    {
+        return tempPizza->getCost() + .50;
     }
 };
 
-/* ConcreteDecoratorB */
-class ScrollDecorator : public Decorator
+class TomatoSauce : public ToppingDecorator
 {
 public:
-    ScrollDecorator(Widget* w) : Decorator(w) { }
-    void Draw() override
+    TomatoSauce(Pizza* newPizza) : ToppingDecorator(newPizza)
     {
-        Decorator::Draw();
-        std::cout << "ScrollDecorator" << '\n';
+        std::cout << "토마토 소스 추가" << std::endl;
+    }
+
+    std::string getDescription() override
+    {
+        return tempPizza->getDescription() + ", 토마토 소스";
+    }
+
+    double getCost() override
+    {
+        return tempPizza->getCost() + .35;
     }
 };
 
 int main()
 {
-    auto widget = std::unique_ptr<Widget>(new BorderDecorator(new ScrollDecorator(new TextField(80, 24))));
-    widget->Draw();
+    auto basicPizza = std::unique_ptr<Pizza>(new TomatoSauce(new Mozzarella(new PlainPizza)));
+    std::cout << "재료 : " << basicPizza->getDescription() << std::endl;
+    std::cout << "가격 : " << basicPizza->getCost() << std::endl;
+    // 도우 추가
+    // 모짜렐라 치즈 추가
+    // 토마토 소스 추가
+    // 재료 : 얇은 도우, 모짜렐라 치즈, 토마토 소스
+    // 가격 : 4.85
     return 0;
 }
