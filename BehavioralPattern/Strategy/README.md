@@ -26,4 +26,4 @@
 - 코드 재사용이 용이하다.
 
 ## 예제
-- [Strategy](/BehavioralPattern/Strategy/strategy.cpp)
+- [Strategy](/BehavioralPattern/Strategy/Strategy.cpp)
