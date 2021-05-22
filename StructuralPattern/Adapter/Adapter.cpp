@@ -1,53 +1,103 @@
 #include<iostream>
 #include<string>
 
-class Banner
+class EnemyAttacker
 {
 public:
-    std::string s;
-    Banner() = default;
-    Banner(std::string st) : s(st) {}
+    virtual void fireWeapon() = 0;
+    virtual void driveForward() = 0;
+    virtual void assignDriver(std::string driverName) = 0;
+};
 
-    void PrintString()
+class EnemyTank : public EnemyAttacker
+{
+public:
+    void fireWeapon() override
     {
-        std::cout << "(" << s << ")" << std::endl;
+        int attackDamage = 10;
+        std::cout << "Enemy Tank does " << attackDamage << " damage" << std::endl;
+    }
+
+    void driveForward() override
+    {
+        int movement = 5;
+        std::cout << "Enemy Tank moves " << movement << " spaces" << std::endl;
+    }
+
+    void assignDriver(std::string driverName) override
+    {
+        std::cout << driverName << " is driving the tank" << std::endl;
     }
 };
 
-class Print
+
+class EnemyRobot
 {
 public:
-    virtual void PrintWeak() = 0;
-    virtual void PrintStrong() = 0;
-};
-
-class PrintBanner : public Banner, public Print
-{
-public:
-    PrintBanner(std::string s) : Banner(s) { }
-
-    void PrintStrong() override
+    void smashWithHands()
     {
-        std::cout << "**********************" << std::endl;
-        PrintString();
-        std::cout << "**********************" << std::endl;
+        int attackDamage = 5;
+        std::cout << "Enemy Robot causes " << attackDamage << " damage with its hands" << std::endl;
     }
 
-    void PrintWeak() override
+    void walkForward()
     {
-        PrintString();
+        int movement = 3;
+        std::cout << "Enemy Robot walks forward " << movement << " spaces" << std::endl;
+    }
+
+    void reactToHuman(std::string driverName)
+    {
+        std::cout << "Enemy Robot tramps on " << driverName << std::endl;
+    }
+};
+
+class EnemyRobotAdapter : public EnemyAttacker
+{
+public:
+    std::unique_ptr<EnemyRobot> theRobot;
+
+    EnemyRobotAdapter(std::unique_ptr<EnemyRobot>& newRobot) : theRobot(std::move(newRobot)) {}
+
+    void fireWeapon() override
+    {
+        theRobot->smashWithHands();
+    }
+
+    void driveForward() override
+    {
+        theRobot->walkForward();
+    }
+
+    void assignDriver(std::string driverName) override
+    {
+        theRobot->reactToHuman(driverName);
     }
 };
 
 int main()
 {
-    std::string s = "test";
-    Print* p = new PrintBanner(s);
+    auto tank = std::make_unique<EnemyTank>();
 
-    std::cout << "Weak 배너" << std::endl;
-    p->PrintStrong();
-    std::cout << std::endl << std::endl;
-    std::cout << "strong 배너" << std::endl;
-    p->PrintWeak();
+    auto robot = std::make_unique<EnemyRobot>();
+
+    auto robotAdapter = std::make_unique<EnemyRobotAdapter>(robot);
+
+    std::cout << "The Robot" << std::endl;
+    robot->reactToHuman("Paul");
+    robot->walkForward();
+    robot->smashWithHands();
+
+    std::cout << std::endl << "The Enemy Tank" << std::endl;
+    tank->assignDriver("Frank");
+    tank->driveForward();
+    tank->fireWeapon();
+
+    std::cout << std::endl << "The Robot with Adapter" << std::endl;
+    // EnemyAttacker의 함수를 호출하지만 결과는 Robot의 각 함수를 호출한것과 같다.
+    robotAdapter->assignDriver("Mark");
+    robotAdapter->driveForward();
+    robotAdapter->fireWeapon();
+
     return 0;
 }
