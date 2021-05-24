@@ -26,3 +26,4 @@
 ### 구조 패턴 종류
 1. [Adapter Pattern](/StructuralPattern/Adapter/README.md)
 2. [Decorator Pattern](/StructuralPattern/Decorator/README.md)
+3. [Composite Pattern](/StructuralPattern/Composite/README.md)
