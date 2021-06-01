@@ -18,6 +18,7 @@
 ### 생성 패턴 종류
 1. [Singleton Pattern](/CreationalPattern/Singleton/README.md)
 2. [FactoryMethod Pattern](/CreationalPattern/FactoryMethod/README.md)
+3. [AbstractFactory Pattern](/CreationalPattern/AbstractFactory/README.md)
 
 ## 구조 패턴
 - 클래스나 객체를 조합해 **더 큰 구조를 만드는 패턴**
@@ -27,3 +28,4 @@
 1. [Adapter Pattern](/StructuralPattern/Adapter/README.md)
 2. [Decorator Pattern](/StructuralPattern/Decorator/README.md)
 3. [Composite Pattern](/StructuralPattern/Composite/README.md)
+4. [Bridge Pattern](/StructuralPattern/Bridge/README.md)
