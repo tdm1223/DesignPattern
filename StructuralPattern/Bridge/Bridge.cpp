@@ -1,5 +1,7 @@
 #include<iostream>
+#include<memory>
 
+// Implementor
 class Drawing
 {
 public:
@@ -7,6 +9,7 @@ public:
     virtual void fill() = 0;
 };
 
+// ConcreteImplementor
 class RectDrawing : public Drawing
 {
     void drawLine(int x, int y)
@@ -20,6 +23,7 @@ class RectDrawing : public Drawing
     }
 };
 
+// ConcreteImplementor
 class CircleDrawing : public Drawing
 {
     void drawLine(int x, int y)
@@ -33,6 +37,7 @@ class CircleDrawing : public Drawing
     }
 };
 
+// Abstraction
 class Shape {
 public:
     virtual void draw() = 0;
@@ -53,6 +58,7 @@ private:
     Drawing* drawing;
 };
 
+// RefindAbstraction
 class Rectangle : public Shape
 {
 public:
@@ -64,6 +70,7 @@ public:
     }
 };
 
+// RefindAbstraction
 class Circle : public Shape
 {
 public:
@@ -77,18 +84,16 @@ public:
 
 int main()
 {
-    Shape* rectangle = new Rectangle(new RectDrawing());
-    Shape* circle = new Circle(new CircleDrawing());
+    auto rectangle = std::unique_ptr<Shape>(new Rectangle(new RectDrawing));
+    auto circle = std::unique_ptr<Shape>(new Circle(new CircleDrawing));
 
     rectangle->drawLine(1, 2);
     rectangle->fill();
     rectangle->draw();
 
+    std::cout << std::endl << std::endl;
     circle->drawLine(3, 4);
     circle->fill();
     circle->draw();
-
-    delete rectangle;
-    delete circle;
     return 0;
 }
