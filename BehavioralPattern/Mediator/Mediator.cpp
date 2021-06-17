@@ -16,14 +16,17 @@ public:
 class Colleague
 {
 public:
-    Colleague(Mediator* m, const char* name) : mediator_(m), name_(name) {}
+    Colleague(std::shared_ptr<Mediator> m, const char* name) : name_(name)
+    {
+        mediator_ = std::move(m);
+    }
 
 public:
     virtual void SendMessages(const char* str) = 0;
     virtual void ReceiveMessages(const char* str) = 0;
 
 protected:
-    Mediator* mediator_;
+    std::shared_ptr<Mediator> mediator_;
     std::string name_;
 };
 
@@ -31,7 +34,7 @@ protected:
 class User : public Colleague
 {
 public:
-    User(Mediator* m, const char* name) : Colleague(m, name) {}
+    User(std::shared_ptr<Mediator> m, const char* name) : Colleague(m, name) {}
 
 public:
     void SendMessages(const char* str) override
@@ -50,6 +53,7 @@ public:
 class ChatMediator : public Mediator
 {
 public:
+    ChatMediator() = default;
     void AppendUser(Colleague* colleague) override
     {
         list_.push_back(colleague);
@@ -65,7 +69,9 @@ public:
         for (Colleague* object : list_)
         {
             if (object != sender)
+            {
                 object->ReceiveMessages(message);
+            }
         }
     }
 
@@ -75,16 +81,23 @@ private:
 
 int main()
 {
-    ChatMediator charMediator;
+    std::shared_ptr<ChatMediator> chatMediator(new ChatMediator());
 
-    User user1(&charMediator, "A");
-    User user2(&charMediator, "B");
-    User user3(&charMediator, "C");
+    User user1(chatMediator, "A");
+    User user2(chatMediator, "B");
+    User user3(chatMediator, "C");
 
-    charMediator.AppendUser(&user1);
-    charMediator.AppendUser(&user2);
-    charMediator.AppendUser(&user3);
+    chatMediator->AppendUser(&user1);
+    chatMediator->AppendUser(&user2);
+    chatMediator->AppendUser(&user3);
 
     user1.SendMessages("HELLO!");
+    std::cout << std::endl;
+
+    user2.SendMessages("HI!");
+    std::cout << std::endl;
+
+    user3.SendMessages("TEST!");
+    std::cout << std::endl;
     return 0;
 }
